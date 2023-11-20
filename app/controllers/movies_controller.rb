@@ -14,9 +14,10 @@ class MoviesController < ApplicationController
       @ratings_to_show = @ratings_to_show.keys
     end
 
-    sort_column = params[:sort]
+    sort_column = params[:sort] || session[:sort] # Sesion que recuerda el ordenamiento
     @movies = Movie.with_ratings(@ratings_to_show).order("#{sort_column}")
     session[:ratings] = @ratings_to_show
+    session[:sort] = sort_column  # Recuerda el ordenamiento de la sesion
   end
 
   def new
