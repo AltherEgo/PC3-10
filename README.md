@@ -211,5 +211,7 @@ git push origin guisa17
 
 ## Parte 3: Recuerda la configuración de clasificación y filtrado
 
-# TODO
+Esta parte le corresponde a @Jairo.
+Explicacion y capturas de la parte 3.
 
+En este apartado se realiza (...)
