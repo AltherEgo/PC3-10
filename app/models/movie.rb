@@ -3,7 +3,7 @@ class Movie < ActiveRecord::Base
       if ratings_list.nil? || ratings_list.empty?
         all
       else
-        where(rating: ratings_list.keys)
+        where(rating: ratings_list)
       end
     end
   
