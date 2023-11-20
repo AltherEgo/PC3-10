@@ -177,3 +177,5 @@ end
 
 Esta parte le corresponde a @Jairo.
 Explicacion y capturas de la parte 3.
+
+En este apartado se realiza (...)
