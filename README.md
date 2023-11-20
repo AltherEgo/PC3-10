@@ -6,13 +6,120 @@
 
 ## Parte 0: Configuración inicial
 
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/b5429d28-caf7-4b25-9d9c-5651cb412956)
 
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/31c06068-c0ea-41ae-8247-d400f7e087e5)
 
+**Pregunta: ¿Cómo decide Rails dónde y cómo crear la base de datos de desarrollo? (Sugerencia: verifica los subdirectorios db y config)**
+
+En Rails, la configuración de la base de datos de desarrollo se determina a través del archivo database.yml ubicado en el directorio config. Este archivo especifica la dirección y otros detalles relevantes para la conexión a la base de datos.
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/0be6b098-cfea-489a-8049-6ff64bf0f715)
+
+**Pregunta: ¿Qué tablas se crearon mediante las migraciones?**
+La migración creo la tabla movies 
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/14d2dfe1-b7c0-4759-b479-23a8ac9e93f6)
+
+Mediante la migración de db:seed se cargan datos de prueba para la base de datos
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/13a34307-571c-456e-bd45-700197dd2e39)
+
+**Pregunta: ¿Qué datos de semilla se insertaron y dónde se especificaron? **
+El archivo db/seed.rb nos proporciona la información que se añadirá y se cargaron mediante rake db:seed  
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/95f3f8fd-405f-4905-bd8d-c2bad980336c)
+
+Verificamos, mediante el uso de rails s el correcto funcionamiento
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/566697d9-1a7e-46c9-927d-cd4ce82d7796)
+
+**Uso heroku**
+Inicio de sesión
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/b0367bb3-8ec6-46fd-bb22-4f322ec6e21d)
+
+Creacion de app
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/98837818-44a2-4585-a418-2df2504caf33)
+
+heroku apps:favorites:add -a su23-chips53-10
+heroku git:remote -a su23-chips53-10
+
+#Se añade el remoto 
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/b616aaaf-3908-4143-85b6-3190aee7240c)
+
+**Ajuste para heroku**
+Tenemos que modificar la configuración de heroky para que no hayan conflictos con la version 2.6.6
+heroku stack:set heroku-20
+
+**Push de nuestra rama a heroku **
+Finalmente, regresa a tu rama maestra y realiza tu primera implementación de Heroku:
+git checkout master
+git push heroku master
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/00192a29-13c8-4bfa-a7bb-0d471ec2a677)
 
 
 ## Parte 1: Filtrar la lista de películas por clasificación
+#Creación de cuadros marcables
+Este codigo nos permite disponer de cuadros en los que nuestras diferentes clasificación podrán ser elegidas
+```ruby
+<%= form_tag movies_path, method: :get, id: 'ratings_form' do %>
+  <% @all_ratings.each do |rating| %>
+    <div class="form-check form-check-inline">
+      <%= label_tag "ratings[#{rating}]", rating, class: 'form-check-label' %>
+      <%= check_box_tag "ratings[#{rating}]", "1", @ratings_to_show.include?(rating), class: 'form-check-input' %>
+    </div>
+  <% end %>
+  <%= submit_tag 'Refresh', id: 'ratings_submit', class: 'btn btn-primary' %>
+<% end %>
+```
+El objetivo de usar este código es poder filtrar y mostrar solo las películas seleccionadas, mediante el botón de refresh se mostrarán los cambios. El primer error que nos encontramos está en "@all_ratings" debido a que no lo hemos definido en el modelo y nos retorna una clase nula
 
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/99b5684c-7fbd-404b-89cb-cdac1da2166e)
 
+Una solución a esto es usar un arreglo con los las clasificaciones, así cuando tengamos que mostrar las clasificaciones se podrá iterar correctamente
+```ruby
+def self.all_ratings
+      ['G', 'PG', 'PG-13', 'R']
+    end
+```
+Sin embargo por ahora no se está filtrando nada, necesitamos modificar el controlador para hacerlo posible
+
+Aquí podemos obtener todas las peliculas con Movie.all_ratings o el filtro actual de la última sesión, luego será envíada a with_ratings para realizar la consulta SQL
+```ruby
+def index
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = params[:ratings] || session[:ratings] || @all_ratings
+
+    @movies = Movie.with_ratings(@ratings_to_show)
+    session[:ratings] = @ratings_to_show
+  end
+```
+En el modelo se define with_ratings que nos mostrará todos los resultado si @ratings_to_show no tiene elementos o si es nula .Por otro lado, nos mostrará la consulta de los elementos marcados, mediante el uso de la herramienta de activeRecord: where(rating: ratings_list.keys)
+
+```ruby
+def self.with_ratings(ratings_list)
+      if ratings_list.nil? || ratings_list.empty?
+        all
+      else
+        where(rating: ratings_list.keys)
+      end
+    end
+```  
+Luego de estás modificaciones funciona correctamente el filtrado
+
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/c5d1816a-eff6-4023-b16a-1a7c52fda6af)
+
+Pregunta: ¿Por qué el controlador debe configurar un valor predeterminado para @ratings_to_show incluso si no se marca nada?
+Es una buena práctica debido a que ya sea que nos evitamos valores nulos o inesperados, ya sea que no se ingrese ningún parametros siempre mostrará algo. 
+Eso nos permite una buena experiencia de usuario
+
+Pull request y push
+Finalmente hacemos git checkout y push al repositorio
+![Alt text](https://github.com/AltherEgo/PC3-10/assets/119552157/1a8909c8-c0e3-4399-b232-f75010baf5ec)
 
 
 
