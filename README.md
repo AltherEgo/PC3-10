@@ -125,7 +125,47 @@ Finalmente hacemos git checkout y push al repositorio
 
 ## Parte 2: Ordenar la lista de películas
 
+### Configuración de los enlaces
 
+Para la siguiente sección, se nos pide que los títulos de las columnas "Movie Title" y "Release Date" se conviertan en enlaces clickeables, tal que que al clickear en alguno de ellos, la lista de las películas se recargue y se ordene según título o fecha, respectivamente.
+
+Para, ello nos dirigiremos a nuestro archivo `app/views/movies/index.html.erb` en donde realizaremos la siguiente modificación:
+
+```ruby
+<thead>
+<tr>
+    <th class="<%= 'hilite bg-warning' if session[:sort] == 'title' %>">
+    <%= link_to 'Movie Title', movies_path(sort:'title'), id:'title_header' %>
+    </th>
+    <th>Rating</th>
+    <th class="<%= 'hilite bg-warning' if session[:sort] == 'release_date' %>">
+    <%= link_to 'Release Date', movies_path(sort:'release_date'), id:'release_date_header'%>
+    </th>
+    <th>More Info</th>
+</tr>
+</thead>
+```
+- Se ha agregado un `link_to` el cual nos creará enlaces clickeable para las columnas señaladas.
+- Se ha agregado las clases `hilite bg-warning`, pertenecientes a Bootstrap, para darle formato a las columnas, si es que nuestra lista de películas está ordenada.
+- Como se menciona respecto a las rutas RESTful, se hace uso del asistente de rutas `movies_path` con el parámetro `sort`, lo cual nos indica que en nuestro controlador index se encuentra la implementación del ordenamiento a través de dicho parámetro.
+- Se añaden los identificadores `title` y `realease_date`
+
+Y en nuestro archivo `app/controllers/movie_controller.rb` se realiza la siguiente modificación:
+
+```ruby
+def index
+@all_ratings = Movie.all_ratings
+@ratings_to_show = params[:ratings] || session[:ratings] || @all_ratings
+
+if @ratings_to_show.is_a?(Hash)
+    @ratings_to_show = @ratings_to_show.keys
+end
+
+sort_column = params[:sort]
+@movies = Movie.with_ratings(@ratings_to_show).order("#{sort_column}")
+session[:ratings] = @ratings_to_show
+end
+```
 
 
 
