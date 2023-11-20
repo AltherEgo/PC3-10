@@ -125,6 +125,7 @@ Finalmente hacemos git checkout y push al repositorio
 
 ## Parte 2: Ordenar la lista de películas
 
+
 ### Configuración de los enlaces
 
 Para la siguiente sección, se nos pide que los títulos de las columnas "Movie Title" y "Release Date" se conviertan en enlaces clickeables, tal que que al clickear en alguno de ellos, la lista de las películas se recargue y se ordene según título o fecha, respectivamente.
@@ -150,6 +151,7 @@ Para, ello nos dirigiremos a nuestro archivo `app/views/movies/index.html.erb` e
 - Como se menciona respecto a las rutas RESTful, se hace uso del asistente de rutas `movies_path` con el parámetro `sort`, lo cual nos indica que en nuestro controlador index se encuentra la implementación del ordenamiento a través de dicho parámetro.
 - Se añaden los identificadores `title` y `realease_date`
 
+
 Para poder agregar la funcionalidad pedida, nos dirigiremos a nuestro archivo `app/controllers/movie_controller.rb` se realiza la siguiente lógica:
 
 ```ruby
@@ -166,10 +168,44 @@ sort_column = params[:sort]
 session[:ratings] = @ratings_to_show
 end
 ```
-
 - Se realiza un condicional para verificar si nuestro argumento es un hash.
 - Por medio de `sort_column` obtendremos el páremetro `sort` de la solicitud recibida. Este se establecerá cuando hagamos click sobre alguno de nuestros títulos. 
 - Luego, a la línea que ya habíamos definido en la parte 1 `@movies = Movie.with_ratings(@ratings_to_show).order("#{sort_column}")` se le ha agregado el método `order` de ActiveRecord, al cual le pasaremos como parámetro qué columna debe ordenar.
+
+Con estos cambios realizados, inciamos nuestra aplicación localmente y podremos apreciar cómo es que ahora se puede realizar el ordenamiento tan solo dando click sobre cada uno de los encabezados.
+
+Ordenamieto de la lista de películas por nombre:
+![Alt text](img/image.png)
+
+Ordenamiento de la lista de películas por fecha:
+![Alt text](img/image-1.png)
+
+
+### Agregar parámetros a rutas RESTful existentes
+
+Previamente hemos hecho uso del método `movies_path` el cual nos ayuda a generar URIs correctas para la página de índices de películas. Para nuestro caso, le hemos pasado como referencia el parámetro `sort`, en el cual se indica cómo queremos ordenar nuestra lista de películas, sea por título o por fecha. 
+En otras palabras, se ha logrado que nuestros encabezados se conviertan en enlaces que al dar click, apunten a la ruta RESTful para recuperar películas, pero modificado bajo el parámetro de ordenamiento.
+
+
+### Mostras las cosas en el orden correcto
+
+Un problema que pudo llegar a desprenderse es el que, al momento de dar a `Refresh` en la página, las casillas de verificación que se han marcado se hayan olvidado. Para evitar dicho problema, simplemente se pasan al controlador dicha información (`@ratings_to_show`). 
+
+Se muestra la página antes de darle a `Refresh`:
+![Alt text](img/image-2.png)
+
+Luego, al dar `Refresh`, vemos cómo las casillas se mantienen, y este se encuentra ordenado según las casillas marcadas.
+
+![Alt text](img/image-3.png)
+
+Finalmente, todos los cambios locales los subiremos a nuestro rama remota a través de 
+```
+git checkout guisa17
+git status
+git add .
+git commit -m "se realizó un cambio"
+git push origin guisa17
+```
 
 
 
