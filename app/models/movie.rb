@@ -3,7 +3,7 @@ class Movie < ActiveRecord::Base
       if ratings_list.nil? || ratings_list.empty?
         all
       else
-        where(rating: ratings_list)
+        where(rating: ratings_list.keys)
       end
     end
   
@@ -11,4 +11,3 @@ class Movie < ActiveRecord::Base
       ['G', 'PG', 'PG-13', 'R']
     end
   end
-  
