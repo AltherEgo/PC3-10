@@ -1,7 +1,28 @@
-# RottenPotatoes demo app: getting started
+# PC3-CC3S2-Grupo10
 
-This app is associated with the free [online
-course](http://www.saas-class.org) and (non-free)
-[ebook](http://www.saasbook.info) Engineering Software as a Service.
+- Palacios Sinche Breimer Paul - 20200399I
+- Salcedo Alvarez Guillermo Ronie - 20210164D 
 
-To start working on the Rails Intro homework, please follow [the instructions](instructions/README.md).
+
+## Parte 0: Configuración inicial
+
+
+
+
+
+## Parte 1: Filtrar la lista de películas por clasificación
+
+
+
+
+
+## Parte 2: Ordenar la lista de películas
+
+
+
+
+
+## Parte 3: Recuerda la configuración de clasificación y filtrado
+
+
+
