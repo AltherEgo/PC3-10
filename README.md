@@ -125,7 +125,6 @@ Finalmente hacemos git checkout y push al repositorio
 
 ## Parte 2: Ordenar la lista de películas
 
-
 ### Configuración de los enlaces
 
 Para la siguiente sección, se nos pide que los títulos de las columnas "Movie Title" y "Release Date" se conviertan en enlaces clickeables, tal que que al clickear en alguno de ellos, la lista de las películas se recargue y se ordene según título o fecha, respectivamente.
@@ -151,7 +150,6 @@ Para, ello nos dirigiremos a nuestro archivo `app/views/movies/index.html.erb` e
 - Como se menciona respecto a las rutas RESTful, se hace uso del asistente de rutas `movies_path` con el parámetro `sort`, lo cual nos indica que en nuestro controlador index se encuentra la implementación del ordenamiento a través de dicho parámetro.
 - Se añaden los identificadores `title` y `realease_date`
 
-
 Para poder agregar la funcionalidad pedida, nos dirigiremos a nuestro archivo `app/controllers/movie_controller.rb` se realiza la siguiente lógica:
 
 ```ruby
@@ -168,10 +166,10 @@ sort_column = params[:sort]
 session[:ratings] = @ratings_to_show
 end
 ```
+
 - Se realiza un condicional para verificar si nuestro argumento es un hash.
 - Por medio de `sort_column` obtendremos el páremetro `sort` de la solicitud recibida. Este se establecerá cuando hagamos click sobre alguno de nuestros títulos. 
 - Luego, a la línea que ya habíamos definido en la parte 1 `@movies = Movie.with_ratings(@ratings_to_show).order("#{sort_column}")` se le ha agregado el método `order` de ActiveRecord, al cual le pasaremos como parámetro qué columna debe ordenar.
-
 
 
 
