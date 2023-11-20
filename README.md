@@ -176,3 +176,4 @@ end
 ## Parte 3: Recuerda la configuración de clasificación y filtrado
 
 Esta parte le corresponde a @Jairo.
+Explicacion y capturas de la parte 3.
