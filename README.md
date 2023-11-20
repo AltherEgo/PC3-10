@@ -175,5 +175,4 @@ end
 
 ## Parte 3: Recuerda la configuración de clasificación y filtrado
 
-# TODO
-
+Esta parte le corresponde a @Jairo.
