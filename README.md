@@ -2,7 +2,7 @@
 
 - Palacios Sinche Breimer Paul - 20200399I
 - Salcedo Alvarez Guillermo Ronie - 20210164D 
-
+- Calagua Mallqui Jairo Andre - 20210279F
 
 ## Parte 0: Configuración inicial
 
