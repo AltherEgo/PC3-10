@@ -215,3 +215,18 @@ Esta parte le corresponde a @Jairo.
 Explicacion y capturas de la parte 3.
 
 En este apartado se realiza lo que designé a cada miembro .
+```ruby
+def index
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = params[:ratings] || session[:ratings] || @all_ratings
+
+    if @ratings_to_show.is_a?(Hash)
+      @ratings_to_show = @ratings_to_show.keys
+    end
+
+    sort_column = params[:sort] || session[:sort] # Sesion que recuerda el ordenamiento
+    @movies = Movie.with_ratings(@ratings_to_show).order("#{sort_column}")
+    session[:ratings] = @ratings_to_show
+    session[:sort] = sort_column  # Recuerda el ordenamiento de la sesion
+  end
+  ```
