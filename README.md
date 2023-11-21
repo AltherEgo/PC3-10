@@ -211,10 +211,19 @@ git push origin guisa17
 
 ## Parte 3: Recuerda la configuración de clasificación y filtrado
 
-Esta parte le corresponde a @Jairo.
-Explicacion y capturas de la parte 3.
+Para esta parte, se procedió a agregar la Sesion que recuerda el ordenamiento:
+```ruby
+sort_column = params[:sort] || session[:sort]
+```
 
-En este apartado se realiza lo que designé a cada miembro .
+Y también se procedió a agregar una línea para recordar el ordenamiento de la sesión:
+```ruby
+session[:sort] = sort_column
+```
+Pregunta: ¿Por qué se "olvida" la configuración de clasificación/filtrado de casillas de verificación cuando navegas a la página Movie Details y luego hace clic en Back to List button?.
+
+Respuesta: Se "olvida" porque crea una nueva sesión donde no tiene memoria de lo que estaba marcado con anterioridad.
+
 ```ruby
 def index
     @all_ratings = Movie.all_ratings
