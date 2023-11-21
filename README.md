@@ -214,4 +214,4 @@ git push origin guisa17
 Esta parte le corresponde a @Jairo.
 Explicacion y capturas de la parte 3.
 
-En este apartado se realiza (...)
+En este apartado se realiza lo que designé a cada miembro
